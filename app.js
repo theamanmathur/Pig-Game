@@ -8,7 +8,7 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 
 */
-var scores, rs, cp, gp;
+var scores, rs, cp, gp, temp;;
 
 function init() {
     scores = [0, 0];
@@ -42,6 +42,7 @@ function init() {
 }
 
 function nextPlayer() {
+
     //changing the current player
     cp = cp === 0 ? 1 : 0;
 
@@ -57,7 +58,7 @@ function nextPlayer() {
     document.querySelector('.player-1-panel').classList.toggle('active');
 
     //hiding dice
-    document.querySelector(".dice").style.display = "none";
+    //document.querySelector(".dice").style.display = "none";
 
 
 }
@@ -70,8 +71,19 @@ init();
 
 //Event listener method for "ROLL DICE" button
 document.querySelector(".btn-roll").addEventListener("click", function () {
+
+
     if (gp) {
+
         var dice = Math.floor(Math.random() * 6) + 1;
+
+        if (temp == 6 && dice == 6) {
+            console.log("sixer!!");
+            scores[cp] = 0;
+            document.getElementById('score-' + cp).textContent = 0;
+            nextPlayer();
+            return 0;
+        }
 
         diceObj = document.querySelector(".dice");
         diceObj.style.display = 'block';
@@ -84,6 +96,8 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
         } else {
             nextPlayer();
         }
+        temp = dice;
+
     }
 });
 
@@ -97,7 +111,7 @@ document.querySelector('.btn-hold').addEventListener('click', function () {
         document.getElementById('score-' + cp).textContent = scores[cp];
 
         //checking if current player won the game
-        if (scores[cp] >= 20) {
+        if (scores[cp] >= 100) {
             document.getElementById('name-' + cp).textContent = 'Winner!';
 
             //Hide dice
